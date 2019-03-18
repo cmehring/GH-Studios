@@ -1,6 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Serif');
 * { margin: 0; padding: 0; }
+
 .content {
+	padding-top: 4em;
+}
+.fa-icons {
+	text-align: center;
+	background-color: darkkhaki;
+    max-width: 10rem;
+    margin: 0 auto;
+    border-radius: .5em;
+	padding: .25em;
+    margin-bottom: .5em;
+}
+.hero-text {
     padding-top: 4em;
+	position: absolute;
+    top: 1em;
+    text-align: center;
+    left: 38%;
+    color: lightcoral;
+	font-family: 'PT Serif', serif;
+	-webkit-text-stroke-width: .5px;
+   -webkit-text-stroke-color: black;
+   font-size: 2em;
 }
 .login-form {
 	width: 50%;
@@ -8,4 +31,13 @@
 }
 .alert {
 	text-align: center;
+}
+.hero-img {
+	background-image: url("/static/assets/img/background.jpg");
+	height: 18em;
+    background-position: center;
+	-webkit-clip-path: polygon(50% 0%, 100% 0, 100% 75%, 50% 100%, 0% 75%, 0 0);
+	clip-path: polygon(50% 0%, 100% 0, 100% 75%, 50% 100%, 0% 75%, 0 0);
+	filter:blur(8px);
+	position: relative;
 }
