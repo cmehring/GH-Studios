@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, request, session, url_for
+from flask import Flask, render_template, redirect, request, session, url_for, flash
+from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be pushed
@@ -17,6 +18,11 @@ def login():
 			session['username'] = user
 			return redirect(url_for('index'))
 		else:
-			print "Failed"
+			flash('Invalid username or password')
 			
 	return render_template('login.html', form=1234)
+	
+@app.route('/logout')
+def logout():
+   session.pop('username', None)
+   return redirect(url_for('login'))
