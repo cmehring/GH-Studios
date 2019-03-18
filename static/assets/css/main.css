@@ -1,4 +1,8 @@
 * { margin: 0; padding: 0; }
 .content {
     padding-top: 4em;
-}	
+}
+.login-form {
+	width: 50%;
+	margin: 0 auto;
+}
