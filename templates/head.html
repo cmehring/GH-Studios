@@ -28,9 +28,12 @@
 			<li class="nav-item">
 				<a class="nav-link" href="/logout">Log-out</a>
 			</li>
-		  {% elif request.path != "/login" %}
+		  {% elif request.path != "/login" and request.path != "/signup" %}
 			<li class="nav-item">
 				<a class="nav-link" href="/login">Log-in</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/signup">Sign-up</a>
 			</li>
 		  {% endif %}
         </ul>
