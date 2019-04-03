@@ -1,11 +1,10 @@
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from tinydb import TinyDB, Query
+import hashlib
+import time
 
 db = TinyDB('database/db.json')
 User = Query()
-
-from werkzeug.security import check_password_hash
- 
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -20,7 +19,9 @@ def index():
 def login():	 
 	if request.method == 'POST':
 		user = request.form['user']
+		
 		password = request.form['pass']
+		password = hashlib.md5(password.encode('utf-8')).hexdigest()
 		if db.search((User.name == user) & (User.password == password)):
 
 			session['username'] = user
@@ -50,7 +51,8 @@ def signup():
 			flash('Your passwords do not match.')
 			return render_template('signup.html', form=1234)
 		elif user and email and password and password2:
-			db.insert({'name': user, 'email': email,'password': password})
+			password = hashlib.md5(password.encode('utf-8')).hexdigest()
+			db.insert({'time': time.time(),'name': user, 'email': email,'password': password})
 			flash("You have successfully signed-up!")
 			return redirect(url_for('login'))
 	else:
