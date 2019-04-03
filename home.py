@@ -5,6 +5,8 @@ db = TinyDB('database/db.json')
 User = Query()
 
 from werkzeug.security import check_password_hash
+ 
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be pushed
@@ -53,3 +55,7 @@ def signup():
 			return redirect(url_for('login'))
 	else:
 		return render_template('signup.html', form=1234)
+
+#Python FlaskTest.py
+if __name__ == '__main__':
+    app.run(debug=True)
