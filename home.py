@@ -10,13 +10,16 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be pushed
 
-
+#Home page
 @app.route('/')
 def index():
     return render_template('index.html', name=123)
-	
+
+#Login page
 @app.route('/login', methods=['GET', 'POST'])
-def login():	 
+def login():
+	if session.get("username") != None:
+		return redirect(url_for('dash'))
 	if request.method == 'POST':
 		user = request.form['user']
 		
@@ -25,22 +28,25 @@ def login():
 		if db.search((User.name == user) & (User.password == password)):
 
 			session['username'] = user
-			return redirect(url_for('index'))
+			return redirect(url_for('dash'))
 		else:
 			flash('Invalid username or password')
 			
 	return render_template('login.html', form=1234)
-	
+
+#Logout page
 @app.route('/logout')
 def logout():
    session.pop('username', None)
    flash("You have been logged-out.")
    return redirect(url_for('login'))
    
-	
+#Signup page
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-	if request.method == 'POST':
+	if session.get("username") != None:
+		return redirect(url_for('dash'))
+	elif request.method == 'POST':
 	
 		user = request.form['user']
 		email = request.form['email']
@@ -58,6 +64,7 @@ def signup():
 	else:
 		return render_template('signup.html', form=1234)
 
-#Python FlaskTest.py
-if __name__ == '__main__':
-    app.run(debug=True)
+#dashboard page
+@app.route('/dash')
+def dash():
+	return render_template('dash.html', form=1234)
