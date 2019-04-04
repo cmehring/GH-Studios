@@ -26,6 +26,9 @@
           </li>
 		  {% if session['username'] %}
 			<li class="nav-item">
+				<a class="nav-link" href="/dash">Dashboard</a>
+			</li>
+			<li class="nav-item">
 				<a class="nav-link" href="/logout">Log-out</a>
 			</li>
 		  {% elif request.path != "/login" and request.path != "/signup" %}
