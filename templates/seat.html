@@ -1,0 +1,22 @@
+{% extends 'head.html' %}
+
+{% block title %}Seating Chart{% endblock %}
+{% block content %}
+	<div class="card login-form">
+		<div class="card-body">
+			Welcome to our seating chart. With a few simple steps we will create a suggested seating chart for your upcoming event. You will just need to answer a few questions to begin.
+      </div>
+    </div>
+    <hr>
+    <div class="seat-questions">
+        <h2>Seating Questions</h2>
+        <form>How many people will be seated? 
+            <input type="number" name="seat" min="0" max="200">
+        </form>
+        <form>How many people per table would you like?
+            <input type="number" name="seat" min="0" max="25">
+        </form> 
+        <hr>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+{% endblock %}

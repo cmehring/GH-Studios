@@ -68,3 +68,18 @@ def signup():
 @app.route('/dash')
 def dash():
 	return render_template('dash.html', form=1234)
+
+#seating page
+@app.route('/seat')
+def seat():
+	return render_template('seat.html', form=1234)
+
+
+
+
+
+###remove later
+#to run locally just type 'python3 home.py'
+if __name__ == '__main__':
+    app.debug = True
+    app.run(host = '0.0.0.0',port=5000)
