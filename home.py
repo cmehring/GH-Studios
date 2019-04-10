@@ -90,7 +90,7 @@ def seat():
 		templist.append(p4)
 		
 		for guest in generateSeating(templist, int(seats)):
-			print ("Person: " + guest.name + " is sitting at: " + str(guest.tableNum))
+			flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1))
 		
 	return render_template('seat.html')
 
