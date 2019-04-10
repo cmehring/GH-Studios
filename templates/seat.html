@@ -10,13 +10,11 @@
     <hr>
     <div class="seat-questions">
         <h2>Seating Questions</h2>
-        <form>How many people will be seated? 
-            <input type="number" name="seat" min="0" max="200">
-        </form>
-        <form>How many people per table would you like?
-            <input type="number" name="seat" min="0" max="25">
+        <form method="POST">
+			<p>How many people per table would you like?</p>
+            <input type="number" name="seats" min="0" max="25">
+			<hr>
+			<button type="submit" class="btn btn-primary">Generate</button>
         </form> 
-        <hr>
-        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 {% endblock %}
