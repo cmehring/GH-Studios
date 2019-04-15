@@ -64,14 +64,17 @@ def signup():
 	else:
 		return render_template('signup.html')
 
-#dashboard page
+#Dashboard page
 @app.route('/dash')
 def dash():
 	if session.get("username") == None:
 		return redirect(url_for('login'))
 	return render_template('dash.html')
-
-#seating page
+#RSVP system
+@app.route('/rsvp')
+def rsvp():
+	return render_template('rsvp.html')
+#Seating page
 @app.route('/seat', methods=['GET', 'POST'])
 def seat():
 	if session.get("username") == None:

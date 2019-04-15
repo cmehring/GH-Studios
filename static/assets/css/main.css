@@ -25,7 +25,7 @@
    -webkit-text-stroke-color: black;
    font-size: 2em;
 }
-.login-form {
+.login-form, .rsvp-form {
 	width: 50%;
 	margin: 0 auto;
 }
