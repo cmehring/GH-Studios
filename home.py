@@ -110,7 +110,7 @@ def worksForTable(person, table): # Person can sit at the table
 
 def generateSeating(registered_people = [], seat_at_table = 0):
 	processing_people= []
-	processing_people = registered_people.copy() # Everyone Ready for processing
+	processing_people = registered_people[:] # Everyone Ready for processing
 	atTable  = [] # temp list of people at the table
 	expected_tables = 0
 	while (len(processing_people) > 0 ):
@@ -122,7 +122,7 @@ def generateSeating(registered_people = [], seat_at_table = 0):
 					processing_people.remove(guest) # remove from being processed
 			else:
 				expected_tables += 1
-				atTable.clear()
+				del atTable[:]
 			
 	return registered_people;
 
