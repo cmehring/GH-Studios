@@ -101,6 +101,8 @@ class Person:
 		self.hatesID = hatesID
 		self.loveID = loveID
 		self.tableNum = None
+	def __lt__(self, other):
+		return self.tableNum < other.tableNum
 		
 def worksForTable(person, table): # Person can sit at the table
 	for hateIndex in person.hatesID: # for everyone they hate
@@ -123,8 +125,8 @@ def generateSeating(registered_people = [], seat_at_table = 0):
 			else:
 				expected_tables += 1
 				del atTable[:]
-			
-	return registered_people;
+	registered_people.sort()
+	return registered_people
 
 
 ###remove later
