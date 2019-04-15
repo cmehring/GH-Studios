@@ -4,7 +4,7 @@ import hashlib
 import time
 
 db = TinyDB('database/db.json')
-User = Query()
+query_db = Query()
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -25,7 +25,7 @@ def login():
 		
 		password = request.form['pass']
 		password = hashlib.md5(password.encode('utf-8')).hexdigest()
-		if db.search((User.name == user) & (User.password == password)):
+		if db.search((query_db.name == user) & (query_db.password == password)):
 
 			session['username'] = user
 			return redirect(url_for('dash'))
@@ -57,10 +57,17 @@ def signup():
 			flash('Your passwords do not match.')
 			return render_template('signup.html')
 		elif user and email and password and password2:
-			password = hashlib.md5(password.encode('utf-8')).hexdigest()
-			db.insert({'time': time.time(),'name': user, 'email': email,'password': password})
-			flash("You have successfully signed-up!")
+			if (not db.contains(query_db.name == user)):
+				password = hashlib.md5(password.encode('utf-8')).hexdigest()
+				db.insert({'time': time.time(),'name': user, 'email': email,'password': password})
+				flash("You have successfully signed-up!")
+			else:
+				flash("This username already exits.")
+				return render_template('signup.html')
 			return redirect(url_for('login'))
+			
+		flash('You did not fill in one of the inputs!')
+		return render_template('signup.html')
 	else:
 		return render_template('signup.html')
 
