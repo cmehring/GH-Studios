@@ -13,6 +13,10 @@ app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be
 #Home page
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/temp')
+def temp():
     return render_template('index2.html')
 
 #Login page
