@@ -13,6 +13,9 @@
 	padding: .25em;
     margin-bottom: .5em;
 }
+.nav-item {
+	text-align: center;
+}
 .hero-text {
 	margin-top: -8em;
 	margin-bottom: 4em;
