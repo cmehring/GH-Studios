@@ -13,7 +13,7 @@ app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be
 #Home page
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index2.html')
 
 #Login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -30,7 +30,7 @@ def login():
 			session['username'] = user
 			return redirect(url_for('dash'))
 		else:
-			flash('Invalid username or password')
+			flash('Invalid username or password', "danger")
 			
 	return render_template('login.html')
 
@@ -38,7 +38,7 @@ def login():
 @app.route('/logout')
 def logout():
    session.pop('username', None)
-   flash("You have been logged-out.")
+   flash("You have been logged-out.", "success")
    return redirect(url_for('login'))
    
 #Signup page
@@ -54,19 +54,19 @@ def signup():
 		password2 = request.form['pass2']
 		
 		if password != password2:
-			flash('Your passwords do not match.')
+			flash('Your passwords do not match.', "danger")
 			return render_template('signup.html')
 		elif user and email and password and password2:
 			if (not db.contains(query_db.name == user)):
 				password = hashlib.md5(password.encode('utf-8')).hexdigest()
 				db.insert({'time': time.time(),'name': user, 'email': email,'password': password})
-				flash("You have successfully signed-up!")
+				flash("You have successfully signed-up!", "success")
 			else:
-				flash("This username already exits.")
+				flash("This username already exits.", "danger")
 				return render_template('signup.html')
 			return redirect(url_for('login'))
 			
-		flash('You did not fill in one of the inputs!')
+		flash('You did not fill in one of the inputs!', "danger")
 		return render_template('signup.html')
 	else:
 		return render_template('signup.html')
