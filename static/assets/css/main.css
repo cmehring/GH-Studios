@@ -14,11 +14,10 @@
     margin-bottom: .5em;
 }
 .hero-text {
-    padding-top: 4em;
-	position: absolute;
-    top: 1em;
+	margin-top: -8em;
+	margin-bottom: 4em;
+	z-index: 5;
     text-align: center;
-    left: calc(50vw - 4.5em);
     color: lightcoral;
 	font-family: 'PT Serif', serif;
 	-webkit-text-stroke-width: .5px;
@@ -40,4 +39,5 @@
 	clip-path: polygon(50% 0%, 100% 0, 100% 75%, 50% 100%, 0% 75%, 0 0);
 	filter:blur(8px);
 	position: relative;
+	z-index: -5;
 }
