@@ -44,3 +44,13 @@
 	position: relative;
 	z-index: -5;
 }
+
+/*  new homepage */
+.custom-icons {
+	text-align: center;
+	padding-bottom: .5em;
+}
+
+.custom-icons img {
+	height: 7em;
+}
