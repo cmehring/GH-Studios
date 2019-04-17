@@ -2,8 +2,10 @@ from flask import Flask, render_template, redirect, request, session, url_for, f
 from tinydb import TinyDB, Query
 import hashlib
 import time
+import os
 
-db = TinyDB('database/db.json')
+dirname = os.path.dirname(os.path.abspath(__file__))
+db = TinyDB(os.path.join(dirname, 'database', 'db.json'))
 query_db = Query()
 
 app = Flask(__name__)
