@@ -11,7 +11,7 @@ dirname = os.path.dirname(os.path.abspath(__file__))
 dataPath = os.path.join(dirname, 'database')
 if not os.path.exists(dataPath):
 		os.makedirs(dataPath)
-		file = open(dataPath + '/db.json', 'rw+')
+		file = open(dataPath + '/db.json', 'w')
 		file.write("")
 		file.close()
 		
