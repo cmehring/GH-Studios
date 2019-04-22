@@ -127,7 +127,7 @@ def seat():
 			for guest in generateSeating(templist, int(seats)):
 				flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1), "success")
 		else:
-			flash("please enter more than one seat per table", "danger")
+			flash("Please enter more than one seat per table.", "danger")
 			return redirect(url_for('seat'))
 		
 	return render_template('seat.html')
