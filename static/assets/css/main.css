@@ -4,15 +4,6 @@
 .content {
 	padding-top: 4em;
 }
-.fa-icons {
-	text-align: center;
-	background-color: darkkhaki;
-    max-width: 10rem;
-    margin: 0 auto;
-    border-radius: .5em;
-	padding: .25em;
-    margin-bottom: .5em;
-}
 .nav-item {
 	text-align: center;
 }
@@ -21,7 +12,7 @@
 	margin-bottom: 4em;
 	z-index: 5;
     text-align: center;
-    color: lightcoral;
+    color: black;
 	font-family: 'PT Serif', serif;
 	-webkit-text-stroke-width: .5px;
    -webkit-text-stroke-color: black;
@@ -30,9 +21,6 @@
 .login-form, .rsvp-form {
 	width: 50%;
 	margin: 0 auto;
-}
-.alert {
-	text-align: center;
 }
 .hero-img {
 	background-image: url("/static/assets/img/background.jpg");
@@ -56,4 +44,21 @@
 }
 .image-person {
 	text-align: center;
+}
+@media (min-width: 992px) { 
+	.signup-card {
+		margin-top: -10em;	
+	}
+}
+.alert {
+	margin-bottom: 0 !important;
+	text-align: center;
+}
+.hero {
+	height: 20em;
+	background-color: gray;
+}
+.signup-card .btn {
+	margin: auto;
+	display: block;
 }

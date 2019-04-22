@@ -17,10 +17,6 @@ app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be
 def index():
     return render_template('index.html')
 
-@app.route('/temp')
-def temp():
-    return render_template('index2.html')
-
 #Login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -61,7 +57,7 @@ def signup():
 		
 		if password != password2:
 			flash('Your passwords do not match.', "danger")
-			return render_template('signup.html')
+			return redirect(url_for('index'));
 		elif user and email and password and password2:
 			if (not db.contains(query_db.name == user)):
 				password = hashlib.md5(password.encode('utf-8')).hexdigest()
@@ -69,13 +65,13 @@ def signup():
 				flash("You have successfully signed-up!", "success")
 			else:
 				flash("This username already exits.", "danger")
-				return render_template('signup.html')
+				return redirect(url_for('index'));
 			return redirect(url_for('login'))
 			
 		flash('You did not fill in one of the inputs!', "danger")
-		return render_template('signup.html')
+		return redirect(url_for('index'));
 	else:
-		return render_template('signup.html')
+		return redirect(url_for('index'));
 
 #Dashboard page
 @app.route('/dash')
