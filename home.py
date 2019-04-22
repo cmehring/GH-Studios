@@ -3,6 +3,7 @@ from tinydb import TinyDB, Query
 import hashlib
 import time
 import os
+import git
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 db = TinyDB(os.path.join(dirname, 'database', 'db.json'))
@@ -11,6 +12,17 @@ query_db = Query()
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be pushed
+
+#Git stuff
+@app.route('/update')
+def update():
+	if session.get("username") != None:
+		g = git.cmd.Git(dirname)
+		g.pull()
+		flash("You have updated the server.", "success")
+		return redirect(url_for('dash'))
+	return redirect(url_for('login'))
+		
 
 #Home page
 @app.route('/')
