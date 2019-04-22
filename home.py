@@ -113,7 +113,7 @@ def seat():
 		seats = request.form['seats']
 		templist = []
 		
-		if (seats > 0):
+		if (int(seats) > 0):
 			p1 = Person("John")
 			p2 = Person("Sarah", [0])
 			p3 = Person("Jim")
@@ -127,6 +127,7 @@ def seat():
 				flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1), "success")
 		else:
 			flash("please enter more than one seat per table", "danger")
+			return redirect(url_for('seat'))
 		
 	return render_template('seat.html')
 
