@@ -6,6 +6,15 @@ import os
 import git
 
 dirname = os.path.dirname(os.path.abspath(__file__))
+
+# Database stuff
+dataPath = os.path.join(dirname, 'database')
+if not os.path.exists(dataPath):
+		os.makedirs(dataPath)
+		file = open(dataPath + '/db.json', 'rw+')
+		file.write("")
+		file.close()
+		
 db = TinyDB(os.path.join(dirname, 'database', 'db.json'))
 query_db = Query()
 
