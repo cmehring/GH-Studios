@@ -113,17 +113,20 @@ def seat():
 		seats = request.form['seats']
 		templist = []
 		
-		p1 = Person("John")
-		p2 = Person("Sarah", [0])
-		p3 = Person("Jim")
-		p4 = Person("Bill")
-		templist.append(p1)
-		templist.append(p2)
-		templist.append(p3)
-		templist.append(p4)
-		
-		for guest in generateSeating(templist, int(seats)):
-			flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1))
+		if (seats > 0):
+			p1 = Person("John")
+			p2 = Person("Sarah", [0])
+			p3 = Person("Jim")
+			p4 = Person("Bill")
+			templist.append(p1)
+			templist.append(p2)
+			templist.append(p3)
+			templist.append(p4)
+			
+			for guest in generateSeating(templist, int(seats)):
+				flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1), "success")
+		else:
+			flash("please enter more than one seat per table", "danger")
 		
 	return render_template('seat.html')
 
