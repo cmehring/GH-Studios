@@ -27,6 +27,7 @@ app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be
 def update():
 	if session.get("username") != None:
 		g = git.cmd.Git(dirname)
+		g.reset('--hard')
 		g.pull()
 		flash("You have updated the server.", "success")
 		return redirect(url_for('dash'))
