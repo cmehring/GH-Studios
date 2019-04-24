@@ -4,6 +4,7 @@ import hashlib
 import time
 import os
 import git
+from pathlib import Path
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 
@@ -29,6 +30,9 @@ def update():
 		g = git.cmd.Git(dirname)
 		g.reset('--hard')
 		g.pull()
+		# if pythonanywhere sever reset it by touching this file
+		if os.path.isfile('/var/www/chrisdesigns_pythonanywhere_com_wsgi.py'):
+			Path('/var/www/chrisdesigns_pythonanywhere_com_wsgi.py').touch()
 		flash("You have updated the server.", "success")
 		return redirect(url_for('dash'))
 	return redirect(url_for('login'))
@@ -148,7 +152,12 @@ def seat():
 			return redirect(url_for('seat'))
 		
 	return render_template('seat.html')
-
+#Timeline page
+@app.route('/timeline')
+def timeline():
+	if session.get("username") == None:
+		return redirect(url_for('login'))
+	return render_template('timeline.html')
 
 class Person:
 	def __init__(self, name, hatesID = [], loveID= []):
