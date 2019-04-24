@@ -1,3 +1,4 @@
+/* all pages */
 @import url('https://fonts.googleapis.com/css?family=PT+Serif');
 * { margin: 0; padding: 0; }
 
@@ -7,6 +8,14 @@
 .nav-item {
 	text-align: center;
 }
+
+/* form-based pages */
+.login-form, .rsvp-form {
+	width: 50%;
+	margin: 0 auto;
+}
+
+/* Homepage */
 .hero-text {
 	margin-top: -8em;
 	margin-bottom: 4em;
@@ -18,10 +27,7 @@
    -webkit-text-stroke-color: black;
    font-size: 2em;
 }
-.login-form, .rsvp-form {
-	width: 50%;
-	margin: 0 auto;
-}
+
 .hero-img {
 	background-image: url("/static/assets/img/background.jpg");
 	height: 18em;
@@ -33,7 +39,6 @@
 	z-index: -5;
 }
 
-/*  new homepage */
 .custom-icons {
 	text-align: center;
 	padding-bottom: .5em;
@@ -61,4 +66,34 @@
 .signup-card .btn {
 	margin: auto;
 	display: block;
+}
+
+/* rate page */
+
+.rate {
+  display: inline-block;
+}
+
+.bad .persons-name {
+  color: red;
+}
+.rate-person:not(.bad) .persons-name {
+  color: green;
+}
+.rate-person:not(.bad) .fa-smile {
+  color: green;
+}
+
+.bad .fa-frown{
+  color: red;
+}
+
+.rate-person {
+  background-color: lightgrey;
+  text-align: center;
+  font-size: 1.5em;
+  border-bottom: solid black 1px;
+}
+.rate-person .far:hover {
+  color: purple;
 }

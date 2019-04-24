@@ -157,6 +157,10 @@ def seat():
 			return redirect(url_for('seat'))
 		
 	return render_template('seat.html')
+#RSVP system
+@app.route('/pick')
+def pick():
+	return render_template('preferred.html')
 #Timeline page
 @app.route('/timeline')
 def timeline():
