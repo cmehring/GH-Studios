@@ -3,14 +3,36 @@ from tinydb import TinyDB, Query
 import hashlib
 import time
 import os
+import git
 
 dirname = os.path.dirname(os.path.abspath(__file__))
+
+# Database stuff
+dataPath = os.path.join(dirname, 'database')
+if not os.path.exists(dataPath):
+		os.makedirs(dataPath)
+		file = open(dataPath + '/db.json', 'w')
+		file.write("")
+		file.close()
+		
 db = TinyDB(os.path.join(dirname, 'database', 'db.json'))
 query_db = Query()
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be pushed
+
+#Git stuff
+@app.route('/update')
+def update():
+	if session.get("username") != None:
+		g = git.cmd.Git(dirname)
+		g.reset('--hard')
+		g.pull()
+		flash("You have updated the server.", "success")
+		return redirect(url_for('dash'))
+	return redirect(url_for('login'))
+		
 
 #Home page
 @app.route('/')
@@ -109,17 +131,21 @@ def seat():
 		seats = request.form['seats']
 		templist = []
 		
-		p1 = Person("John")
-		p2 = Person("Sarah", [0])
-		p3 = Person("Jim")
-		p4 = Person("Bill")
-		templist.append(p1)
-		templist.append(p2)
-		templist.append(p3)
-		templist.append(p4)
-		
-		for guest in generateSeating(templist, int(seats)):
-			flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1))
+		if (int(seats) > 0):
+			p1 = Person("John")
+			p2 = Person("Sarah", [0])
+			p3 = Person("Jim")
+			p4 = Person("Bill")
+			templist.append(p1)
+			templist.append(p2)
+			templist.append(p3)
+			templist.append(p4)
+			
+			for guest in generateSeating(templist, int(seats)):
+				flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1), "success")
+		else:
+			flash("Please enter more than one seat per table.", "danger")
+			return redirect(url_for('seat'))
 		
 	return render_template('seat.html')
 
