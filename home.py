@@ -148,7 +148,12 @@ def seat():
 			return redirect(url_for('seat'))
 		
 	return render_template('seat.html')
-
+#Timeline page
+@app.route('/timeline')
+def timeline():
+	if session.get("username") == None:
+		return redirect(url_for('login'))
+	return render_template('timeline.html')
 
 class Person:
 	def __init__(self, name, hatesID = [], loveID= []):
