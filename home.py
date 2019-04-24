@@ -108,7 +108,16 @@ def dash():
 	rsvp_code = db.search(query_db.email == session.get("username"))
 	# turns it into hex to shorten the code
 	rsvp_code = str(hex(int(rsvp_code[0]["time"]))).lstrip("0x").upper() 
+	
+	data = db.search(query_db.code == rsvp_code)
+	
+	people = []
+	for person in data:
+		people.append(person["name"])
+	
 	flash("Your RSVP code is: " + rsvp_code, "primary")
+	flash(", ".join(people) + " have registered for your wedding", "primary")
+	
 	return render_template('dash.html')
 #RSVP system
 @app.route('/rsvp', methods=['GET', 'POST'])
@@ -122,6 +131,7 @@ def rsvp():
 		# turns the hex to int and compares it to db to fine if exists
 		data = db.search(query_db.time == int(codeHex, 16))
 		if (len(data) >= 1):
+			db.insert({'code':  code,'name': name, 'email': email}) # todo: check if email exists to prevent duplicates
 			flash("You have registered for " + data[0]["name"] + "'s wedding", "success")
 		else:
 			flash("This wedding code appears to be invalid.", "danger")
