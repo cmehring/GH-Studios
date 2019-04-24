@@ -80,8 +80,18 @@ def dash():
 		return redirect(url_for('login'))
 	return render_template('dash.html')
 #RSVP system
-@app.route('/rsvp')
+@app.route('/rsvp', methods=['GET', 'POST'])
 def rsvp():
+	if request.method == 'POST':
+		name = request.form['name']
+		email = request.form['email']
+		code = request.form['code']
+		codeTime =  str(time.time())[:2] + code[:len(code)-6] + "." + code[len(code)-6:]
+		data = db.search(query_db.time == float(codeTime))
+		if (len(data) >= 1):
+			flash("You have registered for " + data[0]["name"] + "'s wedding", "success")
+		else:
+			flash("This wedding code appears to be invalid.", "danger")
 	return render_template('rsvp.html')
 #Seating page
 @app.route('/seat', methods=['GET', 'POST'])
