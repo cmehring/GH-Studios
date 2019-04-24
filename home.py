@@ -45,13 +45,13 @@ def login():
 	if session.get("username") != None:
 		return redirect(url_for('dash'))
 	if request.method == 'POST':
-		user = request.form['user']
+		email = request.form['email']
 		
 		password = request.form['pass']
 		password = hashlib.md5(password.encode('utf-8')).hexdigest()
-		if db.search((query_db.name == user) & (query_db.password == password)):
+		if db.search((query_db.email == email) & (query_db.password == password)):
 
-			session['username'] = user
+			session['username'] = email
 			return redirect(url_for('dash'))
 		else:
 			flash('Invalid username or password', "danger")
@@ -72,7 +72,7 @@ def signup():
 		return redirect(url_for('dash'))
 	elif request.method == 'POST':
 	
-		user = request.form['user']
+		name = request.form['name']
 		email = request.form['email']
 		password = request.form['pass']
 		password2 = request.form['pass2']
@@ -80,10 +80,10 @@ def signup():
 		if password != password2:
 			flash('Your passwords do not match.', "danger")
 			return redirect(url_for('index'));
-		elif user and email and password and password2:
-			if (not db.contains(query_db.name == user)):
+		elif name and email and password and password2:
+			if (not db.contains(query_db.email == email)):
 				password = hashlib.md5(password.encode('utf-8')).hexdigest()
-				db.insert({'time': time.time(),'name': user, 'email': email,'password': password})
+				db.insert({'time': round(time.time()),'name': name, 'email': email,'password': password})
 				flash("You have successfully signed-up!", "success")
 			else:
 				flash("This username already exits.", "danger")
@@ -100,10 +100,27 @@ def signup():
 def dash():
 	if session.get("username") == None:
 		return redirect(url_for('login'))
+	# get the user's data
+	rsvp_code = db.search(query_db.email == session.get("username"))
+	# turns it into hex to shorten the code
+	rsvp_code = str(hex(int(rsvp_code[0]["time"]))).lstrip("0x").upper() 
+	flash("Your RSVP code is: " + rsvp_code, "primary")
 	return render_template('dash.html')
 #RSVP system
-@app.route('/rsvp')
+@app.route('/rsvp', methods=['GET', 'POST'])
 def rsvp():
+	if request.method == 'POST':
+		name = request.form['name']
+		email = request.form['email']
+		code = request.form['code']
+		# prepares the code to turn into hex
+		codeHex = "0x" + code.lower()
+		# turns the hex to int and compares it to db to fine if exists
+		data = db.search(query_db.time == int(codeHex, 16))
+		if (len(data) >= 1):
+			flash("You have registered for " + data[0]["name"] + "'s wedding", "success")
+		else:
+			flash("This wedding code appears to be invalid.", "danger")
 	return render_template('rsvp.html')
 #Seating page
 @app.route('/seat', methods=['GET', 'POST'])
