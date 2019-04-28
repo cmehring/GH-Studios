@@ -91,9 +91,10 @@
 .rate-person {
   background-color: lightgrey;
   text-align: center;
-  font-size: 1.5em;
-  border-bottom: solid black 1px;
+  font-size: 2em;
+  border: solid black 1px;
+  margin-bottom: .5em;
 }
 .rate-person .far:hover {
-  color: purple;
+  color: darkblue;
 }
