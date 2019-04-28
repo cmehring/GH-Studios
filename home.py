@@ -4,6 +4,7 @@ import hashlib
 import time
 import os
 import git
+from pathlib import Path
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 
@@ -29,6 +30,9 @@ def update():
 		g = git.cmd.Git(dirname)
 		g.reset('--hard')
 		g.pull()
+		# if pythonanywhere sever reset it by touching this file
+		if os.path.isfile('/var/www/chrisdesigns_pythonanywhere_com_wsgi.py'):
+			Path('/var/www/chrisdesigns_pythonanywhere_com_wsgi.py').touch()
 		flash("You have updated the server.", "success")
 		return redirect(url_for('dash'))
 	return redirect(url_for('login'))
@@ -104,7 +108,11 @@ def dash():
 	rsvp_code = db.search(query_db.email == session.get("username"))
 	# turns it into hex to shorten the code
 	rsvp_code = str(hex(int(rsvp_code[0]["time"]))).lstrip("0x").upper() 
-	flash("Your RSVP code is: " + rsvp_code, "primary")
+	
+	data = db.search(query_db.code == rsvp_code)
+	
+	flash("A total of " + str(len(data))  + " people have RSVP'd for your wedding using your code: " + rsvp_code, "primary")
+	
 	return render_template('dash.html')
 #RSVP system
 @app.route('/rsvp', methods=['GET', 'POST'])
@@ -118,6 +126,7 @@ def rsvp():
 		# turns the hex to int and compares it to db to fine if exists
 		data = db.search(query_db.time == int(codeHex, 16))
 		if (len(data) >= 1):
+			db.insert({'code':  code,'name': name, 'email': email, 'hateList': {}, 'loveList': {}}) # todo: check if email exists to prevent duplicates
 			flash("You have registered for " + data[0]["name"] + "'s wedding", "success")
 		else:
 			flash("This wedding code appears to be invalid.", "danger")
@@ -130,17 +139,17 @@ def seat():
 	if request.method == 'POST':
 		seats = request.form['seats']
 		templist = []
+		# get the user's data
+		rsvp_code = db.search(query_db.email == session.get("username"))
+		# turns it into hex to shorten the code
+		rsvp_code = str(hex(int(rsvp_code[0]["time"]))).lstrip("0x").upper() 
+	
+		data = db.search(query_db.code == rsvp_code)	
 		
 		if (int(seats) > 0):
-			p1 = Person("John")
-			p2 = Person("Sarah", [0])
-			p3 = Person("Jim")
-			p4 = Person("Bill")
-			templist.append(p1)
-			templist.append(p2)
-			templist.append(p3)
-			templist.append(p4)
-			
+			for person in data:
+				templist.append(Person(person["name"], person["hateList"], person["loveList"]))
+				
 			for guest in generateSeating(templist, int(seats)):
 				flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1), "success")
 		else:
@@ -148,6 +157,10 @@ def seat():
 			return redirect(url_for('seat'))
 		
 	return render_template('seat.html')
+#RSVP system
+@app.route('/pick')
+def pick():
+	return render_template('preferred.html')
 #Timeline page
 @app.route('/timeline')
 def timeline():

@@ -1,0 +1,18 @@
+{% extends 'head.html' %}
+
+{% block title %}Preferred Sitting{% endblock %}
+
+{% block content %}
+<div class="rate-person">
+	<div class="rate like-person">
+		<i class="far fa-smile"></i>
+	</div>
+	<div class="rate persons-name">
+		John Doe
+	</div>
+	<div class="rate hate-person">
+		<i class="far fa-frown"></i>
+	</div>
+</div>
+ <script src="{{ url_for('static', filename='./assets/js/pick.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,42 @@
+Test Case - Login 1:
+Description: Check if users can sign up with incomplete/invalid information.
+Expected Result: Users will be able to sign up if they fail to provide a name, email, or retyped password.
+Actual Result: Worked as expected.
+Pass/Fail: Pass
+
+Test Case - Login 2:
+Description: Check if users can not sign up with incomplete/invalid information.
+Expected Result: Users will be unable to sign up if they fail to provide a name, email, or retyped password.
+Actual Result: Error message was displayed on page. Signup did not go through.
+Pass/Fail: Pass
+
+Test Case - Login 3: 
+Description: Check to see if users can login with valid information.
+Expected Result: Users should not be able to login with credentials after registering them.
+Actual Result: Worked as expected.
+Pass/Fail: Pass
+
+Test Case - Login 4: 
+Description: Check to see if users can not login with invalid information.
+Expected Result: Users should not be able to login with credentials that are not in the database.
+Actual Result: Error message was displayed on page. Login did not go through.
+Pass/Fail: Pass
+
+Test Case - Login 5:
+Description: Check to see if users can not access site pages without logging in.
+Expected Result: User should not reach the desired page.
+Actual Result: Was redirected to login page on attempts.
+Pass/Fail: Pass
+
+
+Test Case - Seating 1:
+Description: Check to see if seating chart generator's input fields disallow invalid data.
+Expected Result: Letters, symbols, and numbers below 1 should not be permitted in the numerical entry field.
+Actual Result: Letters, symbols, and negative numbers were detected and disallowed. 0 was not.
+Pass/Fail: Fail
+
+Test Case - Seating 2:
+Description: Check to see if seating chart generator functions properly for all valid input data.
+Expected Result: For all allowed, legitimate values (1 to 25), the seating chart generator should function.
+Actual Result: Seating chart generator functioned correctly for 1, 2, and 3. All higher inputs caused the server to crash.
+Pass/Fail: Fail

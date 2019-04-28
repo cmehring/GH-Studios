@@ -4,8 +4,8 @@
 
 {% block content %}
 <head>
-    <link rel="stylesheet" href="../static/assets/css/checklist.css">
-</head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='./assets/css/checklist.css') }}">
+  </head>
 	<div class="card login-form">
 		<div class="card-body">
 			Here you will find a general wedding timeline. We suggest that you try to complete each step within the suggested time block. Have fun!
@@ -65,5 +65,5 @@
           </ul>
     </div>
     <br><br>
-    <script src="{{ url_for('static', filename='./assets/js/checklist.js') }}"></script>
+	<script src="{{ url_for('static', filename='./assets/js/checklist.js') }}"></script>
 {% endblock %}
