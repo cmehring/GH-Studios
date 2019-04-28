@@ -158,27 +158,9 @@ def seat():
 		
 	return render_template('seat.html')
 #RSVP system
-@app.route('/pick', methods=['GET', 'POST'])
+@app.route('/pick')
 def pick():
-	if request.args.get("usercode") != None:
-		user = request.args.get("usercode")
-		rsvp_code = db.search((query_db.email == user) & (query_db.code != None))
-		guest_list = []
-		
-		if request.method == 'POST':
-			list = request.form['list']
-			list = list.split(",")
-			db.update({'hateList': list}, query_db.email == user)
-			flash("You have updated your seating preference.", "success")
-		if (len(rsvp_code) > 0):
-			rsvp_code = rsvp_code[0]["code"]
-			user_list = db.search((query_db.code == rsvp_code) & (query_db.email != user))
-			for guest in user_list:
-				guest_list.append(guest["name"])
-		else:
-			flash("Invalid usercode: Please contact web-admins for new code.", "danger")
-		return render_template('preferred.html', guests=guest_list)
-	return redirect(url_for('rsvp'))
+	return render_template('preferred.html')
 #Timeline page
 @app.route('/timeline')
 def timeline():
@@ -219,6 +201,35 @@ def generateSeating(registered_people = [], seat_at_table = 0):
 	registered_people.sort()
 	return registered_people
 
+#Budget 
+@app.route('/budget', methods=['GET', 'POST'])
+def budget():
+	if session.get("username") == None:
+		return redirect(url_for('login'))
+	if request.method == 'POST':
+		budget = request.form['budget'] #Need to stay under this budget
+		ven_cost = int(request.form['ven-cost'])
+		cat_cost = int(request.form['cat-cost'])
+		cat_plate = int(request.form['cat-plate'])
+		ent_cost = int(request.form['ent-cost'])
+		per_cost = int(request.form['per-cost'])
+		bar_cost = int(request.form['bar-cost'])
+		plates_overall = cat_plate * cat_cost
+
+		net_budget = ven_cost + ent_cost + per_cost + bar_cost + plates_overall
+
+		if int(net_budget) > int(budget):
+			flash("Warning: You are over the budget! Try cutting back on some of your costs", "danger")
+			flash("Your Quota Budget is $ " + budget + " Your current budget is $ " + str(net_budget),"danger")
+			return redirect(url_for('budget'))
+		elif (int(budget) > int(net_budget)):
+			flash("Sucess! You are under budget! You're on your way!", "success")
+			flash("Your Quota Budget is $ " + budget + " Your current budget is $ " + str(net_budget),"success")
+			return redirect(url_for('budget'))
+		else:
+			flash("Error: Make sure you filled in all the boxes!")
+
+	return render_template('budget.html')
 
 ###remove later
 #to run locally just type 'python3 home.py'

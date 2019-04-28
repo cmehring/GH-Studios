@@ -1,0 +1,83 @@
+{% extends 'head.html' %}
+
+{% block title %}Seating Chart{% endblock %}
+{% block content %}
+	<div class="card login-form">
+		<div class="card-body">
+			Welcome to your own personalized budget planner. Here we help you ensure that everything scheduled and financially planned ahead of time! Let's get Started!
+      </div>
+    </div>
+    <hr>
+    <form method = "POST">
+    <div class="budget">
+        <h2>Starting budget</h2>
+            <p>What is your wedding budget? (USD only) </p>
+            <input type="number" name="budget" min="0" max="999999" placeholder="0">
+			<hr>
+    </div>
+    <br>
+    <div class="wedding-ven">
+        <h2>Wedding Venue</h2>
+            <p>What's the name of the wedding venue </p>
+            <input type="text" name="wed-ven" placeholder="Enter name of venue">
+            <p>What is the location of the venue </p>
+            <input type="text" name="wed-loc">
+            <p>What is the cost to reserve the venue? </p>
+            <input type="number" name="ven-cost" min="0" max="999999" placeholder="0">
+            <hr>
+    </div>
+<br>
+    <div class="catering">
+        <h2>Catering</h2>
+            <p>What's the name of the caterer </p>
+            <input type="text" name="caterer" placeholder="Mr. Chcken">
+            <p>What is the location of the venue </p>
+            <input type="text" name="cat-loc">
+            <p>What is the cost for their services </p>
+            <input type="number" name="cat-cost" min="0" max="999999" placeholder="0">
+            <p>What is the cost per plate? </p>
+            <input type="number" name="cat-plate" min="0" max="999999" placeholder="0">
+            <hr>
+    </div>
+<br>
+    <div class="Entertainment">
+        <h2>Catering</h2>
+        <form method="POST">
+            <p>What type of entertainer do you plan on hiring? </p>
+            <input type="text" name="entertainer" placeholder="DJ, band, etc...">
+            <p>What is the name of the entertainment group? </p>
+            <input type="text" name="ent-name" placeholder="0">
+            <p>What is the cost for their services? </p>
+            <input type="number" name="ent-cost" min="0" max="999999" placeholder="0">
+            <hr>
+    </div>
+<br>
+    <div class="Wedding Performer">
+        <h2>Wedding Performer</h2>
+        <p>Everyone wants that special someone to sing at their weeding? Who's yours</p>
+        <form method="POST">
+            <p>Who do you want to perform at your wedding </p>
+            <input type="text" name="performer" placeholder="Usher">
+            <p>What is the cost for their services? </p>
+            <input type="number" name="per-cost" min="0" max="999999" placeholder="0">
+            <hr>
+    </div>
+<br>
+    <div class="Bar">
+        <h2>Bartending Services</h2>
+        <p>You're getting married right? Need to bust open a bottle of henny? Well, come on...</p>
+        <form method="POST">
+            <p>Name of bartending service </p>
+            <input type="text" name="bartender" placeholder="Henna Sea">
+            <p>Cost of bartending services? </p>
+            <input type="number" name="bar-cost" min="0" max="999999" placeholder="0">
+            <hr>
+    </div>
+
+
+    <hr>
+    <br>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
