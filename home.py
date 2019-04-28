@@ -158,9 +158,27 @@ def seat():
 		
 	return render_template('seat.html')
 #RSVP system
-@app.route('/pick')
+@app.route('/pick', methods=['GET', 'POST'])
 def pick():
-	return render_template('preferred.html')
+	if request.args.get("usercode") != None:
+		user = request.args.get("usercode")
+		rsvp_code = db.search((query_db.email == user) & (query_db.code != None))
+		guest_list = []
+		
+		if request.method == 'POST':
+			list = request.form['list']
+			list = list.split(",")
+			db.update({'hateList': list}, query_db.email == user)
+			flash("You have updated your seating preference.", "success")
+		if (len(rsvp_code) > 0):
+			rsvp_code = rsvp_code[0]["code"]
+			user_list = db.search((query_db.code == rsvp_code) & (query_db.email != user))
+			for guest in user_list:
+				guest_list.append(guest["name"])
+		else:
+			flash("Invalid usercode: Please contact web-admins for new code.", "danger")
+		return render_template('preferred.html', guests=guest_list)
+	return redirect(url_for('rsvp'))
 #Timeline page
 @app.route('/timeline')
 def timeline():

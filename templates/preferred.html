@@ -3,16 +3,29 @@
 {% block title %}Preferred Sitting{% endblock %}
 
 {% block content %}
-<div class="rate-person">
-	<div class="rate like-person">
-		<i class="far fa-smile"></i>
+
+{% for name in guests %}
+ 
+	<div class="rate-person">
+		<div class="rate like-person">
+			<i class="far fa-smile"></i>
+		</div>
+		<div class="rate persons-name">
+			{{ name }}
+		</div>
+		<div class="rate hate-person">
+			<i class="far fa-frown"></i>
+		</div>
 	</div>
-	<div class="rate persons-name">
-		John Doe
-	</div>
-	<div class="rate hate-person">
-		<i class="far fa-frown"></i>
-	</div>
-</div>
+
+{% endfor %}
+
+{% if guests is defined and guests|length > 0%}
+<form method="POST">
+	<input type="hidden" class="form-control" id="listvalues" name="list" value="">
+	<button type="submit" class="btn btn-primary">Save Preference</button>
+</form>
+{% endif %}
+
  <script src="{{ url_for('static', filename='./assets/js/pick.js') }}"></script>
 {% endblock %}
