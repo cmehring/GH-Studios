@@ -168,14 +168,16 @@ def pick():
 		rsvp_code = db.search((query_db.email == user) & (query_db.code != None))
 		guest_list = []
 		
-		if request.method == 'POST':
-			list = request.form['list']
-			list = list.split(",")
-			db.update({'hateList': list}, query_db.email == user)
-			flash("You have updated your seating preference.", "success")
 		if (len(rsvp_code) > 0):
 			rsvp_code = rsvp_code[0]["code"]
 			user_list = db.search((query_db.code == rsvp_code) & (query_db.email != user))
+			if request.method == 'POST':
+				list = []
+				for person in request.form['list'].split(","):
+					email = db.search((query_db.code == rsvp_code) & (query_db.name == person))
+					list.append(email[0]["email"])
+				db.update({'hateList': list}, query_db.email == user)
+				flash("You have updated your seating preference.", "success")
 			for guest in user_list:
 				guest_list.append(guest["name"])
 		else:
