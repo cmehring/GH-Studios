@@ -114,6 +114,7 @@ def dash():
 	flash("A total of " + str(len(data))  + " people have RSVP'd for your wedding using your code: " + rsvp_code, "primary")
 	
 	return render_template('dash.html')
+
 #RSVP system
 @app.route('/rsvp', methods=['GET', 'POST'])
 def rsvp():
@@ -131,6 +132,7 @@ def rsvp():
 		else:
 			flash("This wedding code appears to be invalid.", "danger")
 	return render_template('rsvp.html')
+
 #Seating page
 @app.route('/seat', methods=['GET', 'POST'])
 def seat():
@@ -157,7 +159,8 @@ def seat():
 			return redirect(url_for('seat'))
 		
 	return render_template('seat.html')
-#RSVP system
+
+#RSVP rating system
 @app.route('/pick', methods=['GET', 'POST'])
 def pick():
 	if request.args.get("usercode") != None:
@@ -179,6 +182,7 @@ def pick():
 			flash("Invalid usercode: Please contact web-admins for new code.", "danger")
 		return render_template('preferred.html', guests=guest_list)
 	return redirect(url_for('rsvp'))
+
 #Timeline page
 @app.route('/timeline')
 def timeline():
@@ -186,6 +190,35 @@ def timeline():
 		return redirect(url_for('login'))
 	return render_template('timeline.html')
 
+#Budget 
+@app.route('/budget', methods=['GET', 'POST'])
+def budget():
+	if session.get("username") == None:
+		return redirect(url_for('login'))
+	if request.method == 'POST':
+		budget = request.form['budget'] #Need to stay under this budget
+		ven_cost = int(request.form['ven-cost'])
+		cat_cost = int(request.form['cat-cost'])
+		cat_plate = int(request.form['cat-plate'])
+		ent_cost = int(request.form['ent-cost'])
+		per_cost = int(request.form['per-cost'])
+		bar_cost = int(request.form['bar-cost'])
+		plates_overall = cat_plate * cat_cost
+
+		net_budget = ven_cost + ent_cost + per_cost + bar_cost + plates_overall
+
+		if int(net_budget) > int(budget):
+			flash("Warning: You are over the budget! Try cutting back on some of your costs", "danger")
+			flash("Your Quota Budget is $ " + budget + " Your current budget is $ " + str(net_budget),"danger")
+			return redirect(url_for('budget'))
+		elif (int(budget) > int(net_budget)):
+			flash("Sucess! You are under budget! You're on your way!", "success")
+			flash("Your Quota Budget is $ " + budget + " Your current budget is $ " + str(net_budget),"success")
+			return redirect(url_for('budget'))
+		else:
+			flash("Error: Make sure you filled in all the boxes!")
+
+	return render_template('budget.html')
 class Person:
 	def __init__(self, name, hatesID = [], loveID= []):
 		self.name = name
@@ -218,7 +251,6 @@ def generateSeating(registered_people = [], seat_at_table = 0):
 				del atTable[:]
 	registered_people.sort()
 	return registered_people
-
 
 ###remove later
 #to run locally just type 'python3 home.py'
