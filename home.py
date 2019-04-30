@@ -176,9 +176,16 @@ def pick():
 			user_list = db.search((query_db.code == rsvp_code2) & (query_db.email != user))
 			if request.method == 'POST':
 				list = []
-				for person in request.form['list'].split(","):
-					email = db.search((query_db.code == rsvp_code2) & (query_db.name == person))
-					list.append(email[0]["email"])
+				splitList = []
+				if "," in request.form['list']:
+					splitList = request.form['list'].split(",")
+				else:
+					splitList.append(request.form['list'])
+				for person in splitList:
+					if (person != ""):
+						email = db.search((query_db.code == rsvp_code2) & (query_db.name == person))
+						print (person)
+						list.append(email[0]["email"])
 				db.update({'hateList': list}, query_db.email == user)
 				flash("You have updated your seating preference. Please reference to see reflected values.", "success")
 			for guest in user_list:
