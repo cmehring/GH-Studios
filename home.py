@@ -151,9 +151,12 @@ def seat():
 		if (int(seats) > 0):
 			for person in data:
 				templist.append(Person(person["name"], person["hateList"], person["loveList"]))
-				
+			
+			prefered = []
 			for guest in generateSeating(templist, int(seats)):
-				flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1), "success")
+				
+				prefered.append([guest.name, str(guest.tableNum + 1)])
+			return render_template("generated.html", guests=prefered)
 		else:
 			flash("Please enter more than one seat per table.", "danger")
 			return redirect(url_for('seat'))
@@ -168,16 +171,18 @@ def pick():
 		rsvp_code = db.search((query_db.email == user) & (query_db.code != None))
 		guest_list = []
 		
-		if request.method == 'POST':
-			list = request.form['list']
-			list = list.split(",")
-			db.update({'hateList': list}, query_db.email == user)
-			flash("You have updated your seating preference.", "success")
 		if (len(rsvp_code) > 0):
-			rsvp_code = rsvp_code[0]["code"]
-			user_list = db.search((query_db.code == rsvp_code) & (query_db.email != user))
+			rsvp_code2 = rsvp_code[0]["code"]
+			user_list = db.search((query_db.code == rsvp_code2) & (query_db.email != user))
+			if request.method == 'POST':
+				list = []
+				for person in request.form['list'].split(","):
+					email = db.search((query_db.code == rsvp_code2) & (query_db.name == person))
+					list.append(email[0]["email"])
+				db.update({'hateList': list}, query_db.email == user)
+				flash("You have updated your seating preference. Please reference to see reflected values.", "success")
 			for guest in user_list:
-				guest_list.append(guest["name"])
+				guest_list.append([guest["name"], True if guest["email"] in rsvp_code[0]["hateList"] else False])
 		else:
 			flash("Invalid usercode: Please contact web-admins for new code.", "danger")
 		return render_template('preferred.html', guests=guest_list)
@@ -230,12 +235,14 @@ class Person:
 		
 def worksForTable(person, table): # Person can sit at the table
 	for hateIndex in person.hatesID: # for everyone they hate
-		if (hateIndex in table): # if person hates anyone at the table
+		personsName = db.search((query_db.email == hateIndex) & (query_db.code != None))[0]["name"]
+		if (personsName in table): # if person hates anyone at the table
 			return False
 	return True
 
 def generateSeating(registered_people = [], seat_at_table = 0):
 	processing_people= []
+	wont_work = []
 	processing_people = registered_people[:] # Everyone Ready for processing
 	atTable  = [] # temp list of people at the table
 	expected_tables = 0
@@ -243,12 +250,19 @@ def generateSeating(registered_people = [], seat_at_table = 0):
 		for guest in processing_people: # for everyone at the party
 			if (seat_at_table != len(atTable)): # check if table full
 				if worksForTable(guest, atTable):
-					atTable.append(registered_people.index(guest)) # store the index value of this person in the array
+					atTable.append(guest.name) # store the name of this person in the array
 					registered_people[registered_people.index(guest)].tableNum = expected_tables # set the table number for the person
 					processing_people.remove(guest) # remove from being processed
+				elif (len(processing_people) == len(wont_work)): # if we got through everyone and won't work we have to make a new table.
+					expected_tables += 1
+					del atTable[:]
+					del wont_work[:]
+				else:
+					wont_work.append(guest.name)
 			else:
 				expected_tables += 1
 				del atTable[:]
+				del wont_work[:]
 	registered_people.sort()
 	return registered_people
 
