@@ -151,7 +151,7 @@ def seat():
 		if (int(seats) > 0):
 			for person in data:
 				templist.append(Person(person["name"], person["hateList"], person["loveList"]))
-				
+
 			for guest in generateSeating(templist, int(seats)):
 				flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1), "success")
 		else:
@@ -232,7 +232,8 @@ class Person:
 		
 def worksForTable(person, table): # Person can sit at the table
 	for hateIndex in person.hatesID: # for everyone they hate
-		if (hateIndex in table): # if person hates anyone at the table
+		personsName = db.search((query_db.email == hateIndex) & (query_db.code != None))[0]["name"]
+		if (personsName in table): # if person hates anyone at the table
 			return False
 	return True
 
@@ -245,7 +246,7 @@ def generateSeating(registered_people = [], seat_at_table = 0):
 		for guest in processing_people: # for everyone at the party
 			if (seat_at_table != len(atTable)): # check if table full
 				if worksForTable(guest, atTable):
-					atTable.append(registered_people.index(guest)) # store the index value of this person in the array
+					atTable.append(guest.name) # store the name of this person in the array
 					registered_people[registered_people.index(guest)].tableNum = expected_tables # set the table number for the person
 					processing_people.remove(guest) # remove from being processed
 			else:
