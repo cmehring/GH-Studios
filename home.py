@@ -151,9 +151,12 @@ def seat():
 		if (int(seats) > 0):
 			for person in data:
 				templist.append(Person(person["name"], person["hateList"], person["loveList"]))
-
+			
+			prefered = []
 			for guest in generateSeating(templist, int(seats)):
-				flash("Person: " + guest.name + " is sitting at: " + str(guest.tableNum + 1), "success")
+				
+				prefered.append([guest.name, str(guest.tableNum + 1)])
+			return render_template("generated.html", guests=prefered)
 		else:
 			flash("Please enter more than one seat per table.", "danger")
 			return redirect(url_for('seat'))

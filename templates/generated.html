@@ -1,0 +1,25 @@
+{% extends 'head.html' %}
+
+{% block title %}Generated Sitting{% endblock %}
+
+{% block content %}
+
+
+{% for name in guests %}
+
+{% if loop.first or name[1] != guests[loop.index - 2][1] %}
+	{% if not loop.first %}</ul></div>{% endif %}
+	<div class="sit-table">
+	<h2>Table {{ name[1] }}</h2>
+	<ul>
+{% endif %}
+
+<li>{{ name[0] }}</li>
+
+{% if loop.last %}
+	</ul></div>
+{% endif %}
+{% endfor %}
+
+
+{% endblock %}

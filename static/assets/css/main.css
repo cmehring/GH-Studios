@@ -98,3 +98,12 @@
 .rate-person .far:hover {
   color: darkblue;
 }
+
+/* seating chart generate results */
+
+.sit-table {
+    display: inline-block;
+    height: 100%;
+    background-color: palevioletred;
+    padding: 2em;
+}
