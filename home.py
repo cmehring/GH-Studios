@@ -208,24 +208,29 @@ def budget():
 	if session.get("username") == None:
 		return redirect(url_for('login'))
 	if request.method == 'POST':
-		budget = request.form['budget'] #Need to stay under this budget
+		budget = int(request.form['budget'])
 		ven_cost = int(request.form['ven-cost'])
 		cat_cost = int(request.form['cat-cost'])
-		cat_plate = int(request.form['cat-plate'])
 		ent_cost = int(request.form['ent-cost'])
 		per_cost = int(request.form['per-cost'])
 		bar_cost = int(request.form['bar-cost'])
-		plates_overall = cat_plate * cat_cost
 
-		net_budget = ven_cost + ent_cost + per_cost + bar_cost + plates_overall
+		net_budget = ven_cost + ent_cost + per_cost + bar_cost + cat_cost
+		budget_left = budget - net_budget
 
 		if int(net_budget) > int(budget):
 			flash("Warning: You are over the budget! Try cutting back on some of your costs", "danger")
-			flash("Your Quota Budget is $ " + budget + " Your current budget is $ " + str(net_budget),"danger")
+			flash("Your Total Budget is $ " + str(budget) + " You have spent $ " + str(net_budget),"danger")
+			flash("You have: $ " + str(budget_left) + " left!" ,"danger")
 			return redirect(url_for('budget'))
 		elif (int(budget) > int(net_budget)):
 			flash("Sucess! You are under budget! You're on your way!", "success")
-			flash("Your Quota Budget is $ " + budget + " Your current budget is $ " + str(net_budget),"success")
+			flash("Your Total Budget is $ " + str(budget) + " You have spent $ " + str(net_budget),"success")
+			flash("You have: $ " + str(budget_left) + " left!" ,"success")
+			return redirect(url_for('budget'))
+		elif (int(budget) == int(net_budget)):
+			flash("Sucess! You are under budget! You're on your way!", "success")
+			flash("You have: $ " + str(budget_left) + " left!" ,"success")
 			return redirect(url_for('budget'))
 		else:
 			flash("Error: Make sure you filled in all the boxes!")
