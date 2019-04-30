@@ -12,7 +12,7 @@
     <div class="budget">
         <h2>Starting budget</h2>
             <p>What is your wedding budget? (USD only) </p>
-            <input type="number" name="budget" min="0" max="999999" placeholder="0">
+            <input type="number" name="budget" min="0" max="999999" value ="0" >
 			<hr>
     </div>
     <br>
@@ -23,7 +23,7 @@
             <p>What is the location of the venue </p>
             <input type="text" name="wed-loc">
             <p>What is the cost to reserve the venue? </p>
-            <input type="number" name="ven-cost" min="0" max="999999" placeholder="0">
+            <input type="number" name="ven-cost" min="0" max="999999" value ="0">
             <hr>
     </div>
 <br>
@@ -34,9 +34,7 @@
             <p>What is the location of the venue </p>
             <input type="text" name="cat-loc">
             <p>What is the cost for their services </p>
-            <input type="number" name="cat-cost" min="0" max="999999" placeholder="0">
-            <p>What is the cost per plate? </p>
-            <input type="number" name="cat-plate" min="0" max="999999" placeholder="0">
+            <input type="number" name="cat-cost" min="0" max="999999" value ="0">
             <hr>
     </div>
 <br>
@@ -48,7 +46,7 @@
             <p>What is the name of the entertainment group? </p>
             <input type="text" name="ent-name" placeholder="0">
             <p>What is the cost for their services? </p>
-            <input type="number" name="ent-cost" min="0" max="999999" placeholder="0">
+            <input type="number" name="ent-cost" min="0" max="999999" value ="0">
             <hr>
     </div>
 <br>
@@ -59,7 +57,7 @@
             <p>Who do you want to perform at your wedding </p>
             <input type="text" name="performer" placeholder="Usher">
             <p>What is the cost for their services? </p>
-            <input type="number" name="per-cost" min="0" max="999999" placeholder="0">
+            <input type="number" name="per-cost" min="0" max="999999" value ="0">
             <hr>
     </div>
 <br>
@@ -70,14 +68,16 @@
             <p>Name of bartending service </p>
             <input type="text" name="bartender" placeholder="Henna Sea">
             <p>Cost of bartending services? </p>
-            <input type="number" name="bar-cost" min="0" max="999999" placeholder="0">
+            <input type="number" name="bar-cost" min="0" max="999999" value ="0">
             <hr>
     </div>
 
 
-    <hr>
+    
     <br>
     <br>
     <button type="submit" class="btn btn-primary">Submit</button>
+    <br>
+    <br>
     </form>
 {% endblock %}
