@@ -205,36 +205,47 @@ def timeline():
 #Budget 
 @app.route('/budget', methods=['GET', 'POST'])
 def budget():
+	budget = 0
+	ven_cost = 0
+	cat_cost = 0
+	ent_cost = 0
+	per_cost = 0
+	bar_cost = 0
+
 	if session.get("username") == None:
 		return redirect(url_for('login'))
 	if request.method == 'POST':
-		budget = int(request.form['budget'])
-		ven_cost = int(request.form['ven-cost'])
-		cat_cost = int(request.form['cat-cost'])
-		ent_cost = int(request.form['ent-cost'])
-		per_cost = int(request.form['per-cost'])
-		bar_cost = int(request.form['bar-cost'])
+		try:
+			budget = int(request.form['budget'])
+			ven_cost = int(request.form['ven-cost'])
+			cat_cost = int(request.form['cat-cost'])
+			ent_cost = int(request.form['ent-cost'])
+			per_cost = int(request.form['per-cost'])
+			bar_cost = int(request.form['bar-cost'])
 
-		net_budget = ven_cost + ent_cost + per_cost + bar_cost + cat_cost
-		budget_left = budget - net_budget
+			net_budget = ven_cost + ent_cost + per_cost + bar_cost + cat_cost
+			budget_left = budget - net_budget
 
-		if int(net_budget) > int(budget):
-			flash("Warning: You are over the budget! Try cutting back on some of your costs", "danger")
-			flash("Your Total Budget is $ " + str(budget) + " You have spent $ " + str(net_budget),"danger")
-			flash("You have: $ " + str(budget_left) + " left!" ,"danger")
-			return redirect(url_for('budget'))
-		elif (int(budget) > int(net_budget)):
-			flash("Sucess! You are under budget! You're on your way!", "success")
-			flash("Your Total Budget is $ " + str(budget) + " You have spent $ " + str(net_budget),"success")
-			flash("You have: $ " + str(budget_left) + " left!" ,"success")
-			return redirect(url_for('budget'))
-		elif (int(budget) == int(net_budget)):
-			flash("Sucess! You are under budget! You're on your way!", "success")
-			flash("You have: $ " + str(budget_left) + " left!" ,"success")
-			return redirect(url_for('budget'))
-		else:
-			flash("Error: Make sure you filled in all the boxes!")
-
+			if int(net_budget) > int(budget):
+				flash("Warning: You are over the budget! Try cutting back on some of your costs", "danger")
+				flash("Your Total Budget is $ " + str(budget) + "! You have spent $ " + str(net_budget),"danger")
+				flash("You have: $ " + str(budget_left) + " left!" ,"danger")
+				return redirect(url_for('budget'))
+			elif (int(budget) > int(net_budget)):
+				flash("Sucess! You are under budget! You're on your way!", "success")
+				flash("Your Total Budget is $ " + str(budget) + "! You have spent $ " + str(net_budget),"success")
+				flash("You have: $ " + str(budget_left) + " left!" ,"success")
+				return redirect(url_for('budget'))
+			elif (int(budget) == int(net_budget)):
+				flash("Sucess! You are under budget! You're on your way!", "success")
+				flash("You have: $ " + str(budget_left) + " left!" ,"success")
+				return redirect(url_for('budget'))
+			else:
+				flash("Error: Make sure you filled in all the boxes!")
+		
+		except ValueError:
+			flash("You left one or more boxes blank! Make sure you fill in all the boxes!", "danger")
+		
 	return render_template('budget.html')
 class Person:
 	def __init__(self, name, hatesID = [], loveID= []):
