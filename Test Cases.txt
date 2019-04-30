@@ -1,3 +1,10 @@
+Test Case - General 1:
+Description: Check that every page has an appropriate page title.
+Expected Result: Every page will have a proper window/tab name reflecting what it is.
+Actual Result: All but the budget page had a proper name, which merely reflected the site.
+Pass/Fail: Pass
+
+
 Test Case - Login 1:
 Description: Check if users can sign up with incomplete/invalid information.
 Expected Result: Users will be able to sign up if they fail to provide a name, email, or retyped password.
@@ -32,11 +39,24 @@ Pass/Fail: Pass
 Test Case - Seating 1:
 Description: Check to see if seating chart generator's input fields disallow invalid data.
 Expected Result: Letters, symbols, and numbers below 1 should not be permitted in the numerical entry field.
-Actual Result: Letters, symbols, and negative numbers were detected and disallowed. 0 was not.
-Pass/Fail: Fail
+Actual Result: Mostly as expected. 0 is permitted to be entered but will not generate a result, with appropriate error message.
+Pass/Fail: Pass
 
 Test Case - Seating 2:
 Description: Check to see if seating chart generator functions properly for all valid input data.
 Expected Result: For all allowed, legitimate values (1 to 25), the seating chart generator should function.
-Actual Result: Seating chart generator functioned correctly for 1, 2, and 3. All higher inputs caused the server to crash.
+Actual Result: As expected.
+Pass/Fail: Pass
+
+Test Case - Seating 3:
+Description: Check to see how seating chart generator functions without any RSVP'd guests.
+Expected Result: Should not generate any tables, but also should not crash the server.
+Actual Result: As expected.
+Pass/Fail: Pass
+
+
+Test Case - Timeline 1:
+Description: Check to see if the checkmark functionality is working.
+Expected Result: Should be able to check off timeline items to indicate that they're finished.
+Actual Result: Can check off timeline items, but they aren't saved anywhere.
 Pass/Fail: Fail
