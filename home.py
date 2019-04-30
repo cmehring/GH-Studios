@@ -239,6 +239,7 @@ def worksForTable(person, table): # Person can sit at the table
 
 def generateSeating(registered_people = [], seat_at_table = 0):
 	processing_people= []
+	wont_work = []
 	processing_people = registered_people[:] # Everyone Ready for processing
 	atTable  = [] # temp list of people at the table
 	expected_tables = 0
@@ -249,9 +250,16 @@ def generateSeating(registered_people = [], seat_at_table = 0):
 					atTable.append(guest.name) # store the name of this person in the array
 					registered_people[registered_people.index(guest)].tableNum = expected_tables # set the table number for the person
 					processing_people.remove(guest) # remove from being processed
+				elif (len(processing_people) == len(wont_work)): # if we got through everyone and won't work we have to make a new table.
+					expected_tables += 1
+					del atTable[:]
+					del wont_work[:]
+				else:
+					wont_work.append(guest.name)
 			else:
 				expected_tables += 1
 				del atTable[:]
+				del wont_work[:]
 	registered_people.sort()
 	return registered_people
 
