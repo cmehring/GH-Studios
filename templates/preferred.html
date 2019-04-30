@@ -6,12 +6,12 @@
 
 {% for name in guests %}
  
-	<div class="rate-person">
+	<div class="rate-person {% if name[1] == true %}bad{% endif %}">
 		<div class="rate like-person">
 			<i class="far fa-smile"></i>
 		</div>
 		<div class="rate persons-name">
-			{{ name }}
+			{{ name[0] }}
 		</div>
 		<div class="rate hate-person">
 			<i class="far fa-frown"></i>
