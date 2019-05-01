@@ -43,3 +43,13 @@
   color: #fff;
   text-decoration: line-through;
 }
+
+#timeline h2 {
+	width: 10em;
+    display: inline-block;
+    margin-left: -2.5em;
+}
+
+#timeline img.plat {
+	width: 10em;
+}
