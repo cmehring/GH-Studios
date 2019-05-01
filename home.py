@@ -1,10 +1,13 @@
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from tinydb import TinyDB, Query
+from flask_mail import Message
 import hashlib
 import time
 import os
 import git
 from pathlib import Path
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 
@@ -22,6 +25,27 @@ query_db = Query()
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be pushed
+
+#mail 
+@app.route("/mail")
+def mail():
+	if session.get("username") != None:
+		email = "clenart4@kent.edu"
+		message = Mail(
+			from_email='RSVP@emails.pinchof.tech',
+			to_emails=email,
+			subject='Set your seating preference!',
+			html_content = 'Please decide your seating by clicking the link: <br> ' + '<a href="http://chrisdesigns.pythonanywhere.com/pick?usercode=' + email + '">Click here</a>')
+		try:
+			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+			response = sg.send(message)
+			if (response.status_code == 202  or response.status_code == 200):
+				flash("You have sent out reminders to set preferences for guest seating!", "success")
+				return redirect(url_for('dash'))
+		except Exception as e:
+			print(e.message)
+	flash("You have failed to send the email!", "danger")
+	return redirect(url_for('login'))
 
 #Git stuff
 @app.route('/update')
