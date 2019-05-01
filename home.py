@@ -45,7 +45,7 @@ def mail():
 				
 		if (sucessStatus):
 			flash("You have sent out reminders to set preferences for guest seating!", "success")
-			return redirect(url_for('dash'))
+			return redirect(url_for('timeline'))
 			
 	flash("You have failed to send the email!", "danger")
 	return redirect(url_for('login'))
@@ -83,7 +83,7 @@ def update():
 		if os.path.isfile('/var/www/chrisdesigns_pythonanywhere_com_wsgi.py'):
 			Path('/var/www/chrisdesigns_pythonanywhere_com_wsgi.py').touch()
 		flash("You have updated the server.", "success")
-		return redirect(url_for('dash'))
+		return redirect(url_for('timeline'))
 	return redirect(url_for('login'))
 		
 
@@ -96,7 +96,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if session.get("username") != None:
-		return redirect(url_for('dash'))
+		return redirect(url_for('timeline'))
 	if request.method == 'POST':
 		email = request.form['email']
 		
@@ -105,7 +105,7 @@ def login():
 		if db.search((query_db.email == email) & (query_db.password == password)):
 
 			session['username'] = email
-			return redirect(url_for('dash'))
+			return redirect(url_for('timeline'))
 		else:
 			flash('Invalid username or password', "danger")
 			
@@ -122,7 +122,7 @@ def logout():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
 	if session.get("username") != None:
-		return redirect(url_for('dash'))
+		return redirect(url_for('timeline'))
 	elif request.method == 'POST':
 	
 		name = request.form['name']
@@ -147,22 +147,6 @@ def signup():
 		return redirect(url_for('index'));
 	else:
 		return redirect(url_for('index'));
-
-#Dashboard page
-@app.route('/dash')
-def dash():
-	if session.get("username") == None:
-		return redirect(url_for('login'))
-	# get the user's data
-	rsvp_code = db.search(query_db.email == session.get("username"))
-	# turns it into hex to shorten the code
-	rsvp_code = str(hex(int(rsvp_code[0]["time"]))).lstrip("0x").upper() 
-	
-	data = db.search(query_db.code == rsvp_code)
-	
-	flash("A total of " + str(len(data))  + " people have RSVP'd for your wedding using your code: " + rsvp_code, "primary")
-	
-	return render_template('dash.html')
 
 #RSVP system
 @app.route('/rsvp', methods=['GET', 'POST'])
@@ -249,6 +233,15 @@ def pick():
 def timeline():
 	if session.get("username") == None:
 		return redirect(url_for('login'))
+		
+	# get the user's data
+	rsvp_code = db.search(query_db.email == session.get("username"))
+	# turns it into hex to shorten the code
+	rsvp_code = str(hex(int(rsvp_code[0]["time"]))).lstrip("0x").upper() 
+	
+	data = db.search(query_db.code == rsvp_code)
+	
+	flash("A total of " + str(len(data))  + " people have RSVP'd for your wedding using your code: " + rsvp_code, "primary")
 	return render_template('timeline.html')
 
 #Budget 

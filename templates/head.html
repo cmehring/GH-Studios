@@ -26,9 +26,6 @@
           </li>
 		  {% if session['username'] %}
 			<li class="nav-item">
-				<a class="nav-link" href="/dash">Dashboard</a>
-			</li>
-			<li class="nav-item">
 				<a class="nav-link" href="/seat">Seating Chart</a>
 			</li>
 			<li class="nav-item">
@@ -41,6 +38,9 @@
 				<a class="nav-link" href="/logout">Log-out</a>
 			</li>
 		  {% elif request.path != "/login" %}
+		  	<li class="nav-item">
+				<a class="nav-link" href="/rsvp">RSVP</a>
+			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="/login">Log-in</a>
 			</li>
