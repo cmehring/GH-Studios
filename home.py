@@ -6,7 +6,7 @@ import os
 import git
 from pathlib import Path
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import *
 
 dirname = os.path.dirname(os.path.abspath(__file__))
 
@@ -29,22 +29,48 @@ app.config['SECRET_KEY'] = 'gr33nh4wkplsnoh4x5' # technically, this shouldn't be
 @app.route("/mail")
 def mail():
 	if session.get("username") != None:
-		email = "clenart4@kent.edu"
-		message = Mail(
-			from_email='RSVP@emails.pinchof.tech',
-			to_emails=email,
-			subject='Set your seating preference!',
-			html_content = 'Please decide your seating by clicking the link: <br> ' + '<a href="http://chrisdesigns.pythonanywhere.com/pick?usercode=' + email + '">Click here</a>')
-		try:
-			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-			response = sg.send(message)
-			if (response.status_code == 202  or response.status_code == 200):
-				flash("You have sent out reminders to set preferences for guest seating!", "success")
-				return redirect(url_for('dash'))
-		except Exception as e:
-			print(e.message)
+		rsvp_code = db.search(query_db.email == session.get("username"))
+		rsvp_code = str(hex(int(rsvp_code[0]["time"]))).lstrip("0x").upper() 
+		
+		rsvp_code = db.search(query_db.email == session.get("username"))
+		# turns it into hex to shorten the code
+		rsvp_code = str(hex(int(rsvp_code[0]["time"]))).lstrip("0x").upper() 
+	
+		users = db.search((query_db.code == rsvp_code) & (query_db.email != None))
+		
+		sucessStatus = True
+		for users in db.search(query_db.code == rsvp_code ):
+			if (sendmail(users["email"]) == False): # if any fails set status to false
+				sucessStatus = False
+				
+		if (sucessStatus):
+			flash("You have sent out reminders to set preferences for guest seating!", "success")
+			return redirect(url_for('dash'))
+			
 	flash("You have failed to send the email!", "danger")
 	return redirect(url_for('login'))
+
+def sendmail(usersemail):
+
+	mail = Mail()
+	mail.from_email = Email("RSVP@emails.pinchof.tech", "Wedding RSVP")
+	mail.subject = "Set your seating preference!"
+
+	personalization = Personalization()
+	personalization.add_to(Email(usersemail))
+	personalization.add_bcc(Email("RSVP@emails.pinchof.tech"))
+	mail.add_personalization(personalization)
+	mail.add_content(Content("text/html",'Please decide your seating by clicking the link: <br> ' + '<a href="http://chrisdesigns.pythonanywhere.com/pick?usercode=' + usersemail + '">Click here</a>'))
+	
+	mail.reply_to = Email("noreply@greenhawk.com")
+	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))	
+	try:
+		response =  sg.send(mail)
+		if (response.status_code == 202 or response.status_code == 200):
+			return True
+	except Exception as e:
+		print(e.message)
+	return False
 
 #Git stuff
 @app.route('/update')
