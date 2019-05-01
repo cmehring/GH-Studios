@@ -1,6 +1,5 @@
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from tinydb import TinyDB, Query
-from flask_mail import Message
 import hashlib
 import time
 import os
